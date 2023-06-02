@@ -30,7 +30,7 @@ import net.mullvad.mullvadvpn.lib.theme.Dimens
 @Composable
 private fun PreviewBaseCell() {
     AppTheme {
-        SpacedColumn {
+        SpacedColumn(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
             BaseCell(
                 title = {
                     BaseCellTitle(
@@ -93,23 +93,29 @@ internal fun BaseCellTitle(
     title: String,
     style: TextStyle,
     modifier: Modifier = Modifier,
+    textColor: Color = MaterialTheme.colorScheme.onPrimary,
     textAlign: TextAlign = TextAlign.Center
 ) {
     Text(
         text = title,
         textAlign = textAlign,
         style = style,
-        color = MaterialTheme.colorScheme.onPrimary,
+        color = textColor,
         modifier = modifier.wrapContentWidth(align = Alignment.End).wrapContentHeight()
     )
 }
 
 @Composable
-fun BaseSubtitleCell(text: String, modifier: Modifier = Modifier) {
+fun BaseSubtitleCell(
+    text: String,
+    modifier: Modifier = Modifier,
+    style: TextStyle = MaterialTheme.typography.labelMedium,
+    color: Color = MaterialTheme.colorScheme.onSecondary
+) {
     Text(
         text = text,
-        style = MaterialTheme.typography.labelMedium,
-        color = MaterialTheme.colorScheme.onSecondary,
+        style = style,
+        color = color,
         modifier =
             modifier
                 .padding(

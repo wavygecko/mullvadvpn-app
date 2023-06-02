@@ -119,7 +119,7 @@ fun OutOfTimeScreen(
             } else {
                 MaterialTheme.colorScheme.error
             },
-        navigationBarColor = MaterialTheme.colorScheme.background,
+        navigationBarColor = MaterialTheme.colorScheme.surface,
         iconTintColor =
             if (uiState.tunnelState.isSecured()) {
                     MaterialTheme.colorScheme.onPrimary
@@ -137,7 +137,7 @@ fun OutOfTimeScreen(
                 Modifier.fillMaxSize()
                     .verticalScroll(scrollState)
                     .drawVerticalScrollbar(scrollState)
-                    .background(color = MaterialTheme.colorScheme.background)
+                    .background(color = MaterialTheme.colorScheme.surface)
                     .padding(it)
         ) {
             Image(
@@ -150,7 +150,7 @@ fun OutOfTimeScreen(
             Text(
                 text = stringResource(id = R.string.out_of_time),
                 style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(horizontal = Dimens.sideMargin)
             )
             Text(
@@ -163,7 +163,7 @@ fun OutOfTimeScreen(
                         }
                     },
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier =
                     Modifier.padding(
                         top = Dimens.mediumPadding,

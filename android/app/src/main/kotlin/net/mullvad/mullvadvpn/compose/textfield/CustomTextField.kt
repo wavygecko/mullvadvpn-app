@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,8 +37,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.mullvad.mullvadvpn.R
-import net.mullvad.mullvadvpn.lib.theme.MullvadBlue
-import net.mullvad.mullvadvpn.lib.theme.MullvadWhite10
+import net.mullvad.mullvadvpn.lib.theme.AlphaDescription
+import net.mullvad.mullvadvpn.lib.theme.AlphaDisabled
 
 private const val EMPTY_STRING = ""
 private const val NEWLINE_STRING = "\n"
@@ -53,11 +54,11 @@ fun CustomTextField(
     onSubmit: (String) -> Unit,
     isEnabled: Boolean = true,
     placeholderText: String = "",
-    placeHolderColor: Color = MullvadBlue,
+    placeHolderColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
     maxCharLength: Int = Int.MAX_VALUE,
     isValidValue: Boolean,
     isDigitsOnlyAllowed: Boolean,
-    defaultTextColor: Color = Color.White,
+    defaultTextColor: Color = MaterialTheme.colorScheme.onPrimaryContainer.copy(AlphaDescription),
     textAlign: TextAlign = TextAlign.Start
 ) {
     val fontSize = dimensionResource(id = R.dimen.text_medium_plus).value.sp
@@ -71,8 +72,8 @@ fun CustomTextField(
 
     val textColor =
         when {
-            isValidValue.not() -> Color.Red
-            isFocused -> MullvadBlue
+            isValidValue.not() -> MaterialTheme.colorScheme.error
+            isFocused -> MaterialTheme.colorScheme.onPrimaryContainer
             else -> defaultTextColor
         }
 
@@ -80,14 +81,14 @@ fun CustomTextField(
         if (isFocused) {
             placeHolderColor
         } else {
-            Color.White
+            MaterialTheme.colorScheme.onSecondaryContainer
         }
 
     val backgroundColor =
         if (isFocused) {
-            Color.White
+            MaterialTheme.colorScheme.primaryContainer
         } else {
-            MullvadWhite10
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = AlphaDisabled)
         }
 
     fun triggerSubmit() {
@@ -130,7 +131,7 @@ fun CustomTextField(
                 decorationBox()
             }
         },
-        cursorBrush = SolidColor(MullvadBlue),
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onPrimaryContainer),
         modifier =
             modifier
                 .background(backgroundColor)

@@ -38,14 +38,14 @@ fun RedeemVoucherButton(
         modifier = modifier,
         colors =
             ButtonDefaults.buttonColors(
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSecondary,
+                containerColor = MaterialTheme.colorScheme.secondary,
                 disabledContentColor =
-                    MaterialTheme.colorScheme.onPrimary
+                    MaterialTheme.colorScheme.onSecondary
                         .copy(alpha = AlphaInactive)
                         .compositeOver(background),
                 disabledContainerColor =
-                    MaterialTheme.colorScheme.surface
+                    MaterialTheme.colorScheme.secondary
                         .copy(alpha = AlphaDisabled)
                         .compositeOver(background)
             ),

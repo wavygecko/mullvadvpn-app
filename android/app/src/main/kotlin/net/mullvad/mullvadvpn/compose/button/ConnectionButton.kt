@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -42,14 +43,16 @@ fun ConnectionButton(
 ) {
     val containerColor =
         if (state is TunnelState.Disconnected) {
-            MaterialTheme.colorScheme.surface
+            MaterialTheme.colorScheme.secondary
         } else {
-            MaterialTheme.colorScheme.error.copy(alpha = AlphaDisconnectButton)
+            MaterialTheme.colorScheme.error
+                .copy(alpha = AlphaDisconnectButton)
+                .compositeOver(MaterialTheme.colorScheme.primary)
         }
 
     val contentColor =
         if (state is TunnelState.Disconnected) {
-            MaterialTheme.colorScheme.onSurface
+            MaterialTheme.colorScheme.onSecondary
         } else {
             MaterialTheme.colorScheme.onError
         }
@@ -105,7 +108,10 @@ fun PreviewConnectionButton() {
         ConnectionButton(
             text = "Disconnect",
             mainClick = {},
-            containerColor = MaterialTheme.colorScheme.error.copy(alpha = AlphaDisconnectButton),
+            containerColor =
+                MaterialTheme.colorScheme.error
+                    .copy(alpha = AlphaDisconnectButton)
+                    .compositeOver(MaterialTheme.colorScheme.primary),
             contentColor = MaterialTheme.colorScheme.onError,
             reconnectClick = {},
             isReconnectButtonEnabled = false

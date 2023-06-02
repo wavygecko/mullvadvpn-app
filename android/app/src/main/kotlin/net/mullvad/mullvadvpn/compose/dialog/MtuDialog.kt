@@ -69,14 +69,14 @@ fun MtuDialog(
                     // Related to the fix for https://issuetracker.google.com/issues/221643630
                     .fillMaxWidth(0.8f)
                     .background(
-                        color = MaterialTheme.colorScheme.background,
+                        color = MaterialTheme.colorScheme.surface,
                         shape = MaterialTheme.shapes.extraLarge
                     )
                     .padding(dialogPadding)
             ) {
                 Text(
                     text = stringResource(id = R.string.wireguard_mtu),
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.headlineSmall
                 )
 
@@ -111,7 +111,7 @@ fun MtuDialog(
                             MTU_MAX_VALUE
                         ),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = AlphaDescription),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = AlphaDescription),
                     modifier = Modifier.padding(top = smallPadding)
                 )
 

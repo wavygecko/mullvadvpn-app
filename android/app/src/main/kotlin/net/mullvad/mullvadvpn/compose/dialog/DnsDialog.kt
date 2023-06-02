@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,12 +26,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import net.mullvad.mullvadvpn.R
 import net.mullvad.mullvadvpn.compose.textfield.DnsTextField
+import net.mullvad.mullvadvpn.lib.theme.AlphaDisabled
+import net.mullvad.mullvadvpn.lib.theme.AlphaInactive
 import net.mullvad.mullvadvpn.lib.theme.AppTheme
-import net.mullvad.mullvadvpn.lib.theme.MullvadBlue
-import net.mullvad.mullvadvpn.lib.theme.MullvadRed
-import net.mullvad.mullvadvpn.lib.theme.MullvadWhite
-import net.mullvad.mullvadvpn.lib.theme.MullvadWhite20
-import net.mullvad.mullvadvpn.lib.theme.MullvadWhite60
 import net.mullvad.mullvadvpn.viewmodel.CustomDnsItem
 import net.mullvad.mullvadvpn.viewmodel.StagedDns
 
@@ -83,8 +79,8 @@ fun DnsDialog(
                     // Related to the fix for https://issuetracker.google.com/issues/221643630
                     .fillMaxWidth(0.8f)
                     .background(
-                        color = MaterialTheme.colorScheme.background,
-                        MaterialTheme.shapes.extraLarge
+                        color = MaterialTheme.colorScheme.surface,
+                        shape = MaterialTheme.shapes.extraLarge
                     )
                     .padding(dialogPadding)
             ) {
@@ -95,7 +91,7 @@ fun DnsDialog(
                         } else {
                             stringResource(R.string.update_dns_server_dialog_title)
                         },
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = textBigSize
                 )
 
@@ -134,7 +130,7 @@ fun DnsDialog(
                     Text(
                         text = errorMessage,
                         fontSize = textSmallSize,
-                        color = MullvadRed,
+                        color = MaterialTheme.colorScheme.error,
                         modifier = Modifier.padding(top = smallPadding)
                     )
                 }
@@ -147,10 +143,12 @@ fun DnsDialog(
                             .fillMaxWidth(),
                     colors =
                         ButtonDefaults.buttonColors(
-                            containerColor = MullvadBlue,
-                            contentColor = MullvadWhite,
-                            disabledContentColor = MullvadWhite60,
-                            disabledContainerColor = MullvadWhite20
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                            disabledContentColor =
+                                MaterialTheme.colorScheme.onPrimary.copy(alpha = AlphaInactive),
+                            disabledContainerColor =
+                                MaterialTheme.colorScheme.primary.copy(alpha = AlphaDisabled)
                         ),
                     onClick = { onAttemptToSave() },
                     enabled = stagedDns.isValid(),
@@ -171,8 +169,8 @@ fun DnsDialog(
                                 .fillMaxWidth(),
                         colors =
                             ButtonDefaults.buttonColors(
-                                containerColor = MullvadBlue,
-                                contentColor = MullvadWhite
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary
                             ),
                         onClick = { onRemove() },
                         shape = MaterialTheme.shapes.small
@@ -192,8 +190,8 @@ fun DnsDialog(
                             .fillMaxWidth(),
                     colors =
                         ButtonDefaults.buttonColors(
-                            containerColor = MullvadBlue,
-                            contentColor = Color.White
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
                         ),
                     onClick = { onDismiss() },
                     shape = MaterialTheme.shapes.small

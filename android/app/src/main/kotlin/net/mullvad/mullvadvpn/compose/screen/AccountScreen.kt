@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,6 +47,7 @@ import net.mullvad.mullvadvpn.compose.dialog.DeviceNameInfoDialog
 import net.mullvad.mullvadvpn.constant.IS_PLAY_BUILD
 import net.mullvad.mullvadvpn.lib.common.util.capitalizeFirstCharOfEachWord
 import net.mullvad.mullvadvpn.lib.common.util.openAccountPageInBrowser
+import net.mullvad.mullvadvpn.lib.theme.AlphaDescription
 import net.mullvad.mullvadvpn.lib.theme.Dimens
 import net.mullvad.mullvadvpn.util.toExpiryDateString
 import net.mullvad.mullvadvpn.viewmodel.AccountUiState
@@ -81,7 +83,7 @@ fun AccountScreen(
     val context = LocalContext.current
     val state = rememberCollapsingToolbarScaffoldState()
     val progress = state.toolbarState.progress
-    val backgroundColor = MaterialTheme.colorScheme.background
+    val backgroundColor = MaterialTheme.colorScheme.surface
     val systemUiController = rememberSystemUiController()
 
     var showDeviceNameInfoDialog by remember { mutableStateOf(false) }
@@ -94,7 +96,7 @@ fun AccountScreen(
     }
 
     CollapsingToolbarScaffold(
-        backgroundColor = MaterialTheme.colorScheme.background,
+        backgroundColor = backgroundColor,
         modifier = Modifier.fillMaxSize(),
         state = state,
         scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
@@ -106,7 +108,7 @@ fun AccountScreen(
                     whenExpanded = Alignment.BottomStart
                 )
             CollapsingTopBar(
-                backgroundColor = MaterialTheme.colorScheme.secondary,
+                backgroundColor = backgroundColor,
                 onBackClicked = onBackClick,
                 title = stringResource(id = R.string.settings_account),
                 progress = progress,
@@ -125,7 +127,7 @@ fun AccountScreen(
 
         val scrollState = rememberScrollState()
 
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+        Surface(modifier = Modifier.fillMaxSize(), color = backgroundColor) {
             Column(
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.Start,
@@ -138,6 +140,10 @@ fun AccountScreen(
                 Text(
                     style = MaterialTheme.typography.labelMedium,
                     text = stringResource(id = R.string.device_name),
+                    color =
+                        MaterialTheme.colorScheme.onSurface
+                            .copy(alpha = AlphaDescription)
+                            .compositeOver(backgroundColor),
                     modifier = Modifier.padding(start = Dimens.sideMargin, end = Dimens.sideMargin)
                 )
 
@@ -161,6 +167,10 @@ fun AccountScreen(
                 Text(
                     style = MaterialTheme.typography.labelMedium,
                     text = stringResource(id = R.string.account_number),
+                    color =
+                        MaterialTheme.colorScheme.onSurface
+                            .copy(alpha = AlphaDescription)
+                            .compositeOver(backgroundColor),
                     modifier =
                         Modifier.padding(
                             start = Dimens.sideMargin,
@@ -172,6 +182,10 @@ fun AccountScreen(
                 Text(
                     style = MaterialTheme.typography.labelMedium,
                     text = stringResource(id = R.string.paid_until),
+                    color =
+                        MaterialTheme.colorScheme.onSurface
+                            .copy(alpha = AlphaDescription)
+                            .compositeOver(backgroundColor),
                     modifier = Modifier.padding(start = Dimens.sideMargin, end = Dimens.sideMargin)
                 )
 
@@ -193,8 +207,8 @@ fun AccountScreen(
                             ),
                         colors =
                             ButtonDefaults.buttonColors(
-                                contentColor = MaterialTheme.colorScheme.onPrimary,
-                                containerColor = MaterialTheme.colorScheme.surface
+                                contentColor = MaterialTheme.colorScheme.onSecondary,
+                                containerColor = MaterialTheme.colorScheme.secondary
                             )
                     )
                 }
@@ -210,8 +224,8 @@ fun AccountScreen(
                         ),
                     colors =
                         ButtonDefaults.buttonColors(
-                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                            containerColor = MaterialTheme.colorScheme.surface
+                            contentColor = MaterialTheme.colorScheme.onSecondary,
+                            containerColor = MaterialTheme.colorScheme.secondary
                         )
                 )
 

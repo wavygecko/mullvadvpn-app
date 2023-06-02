@@ -11,12 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,11 +45,11 @@ fun PrivacyDisclaimerScreen(
     onPrivacyPolicyLinkClicked: () -> Unit,
     onAcceptClicked: () -> Unit,
 ) {
-    val topColor = colorResource(R.color.blue)
+    val topColor = MaterialTheme.colorScheme.primary
     ScaffoldWithTopBar(
         topBarColor = topColor,
         statusBarColor = topColor,
-        navigationBarColor = colorResource(id = R.color.darkBlue),
+        navigationBarColor = MaterialTheme.colorScheme.surface,
         onAccountClicked = null,
         onSettingsClicked = null
     ) {
@@ -58,7 +58,7 @@ fun PrivacyDisclaimerScreen(
                 Modifier.fillMaxHeight()
                     .fillMaxWidth()
                     .padding(it)
-                    .background(colorResource(id = R.color.darkBlue))
+                    .background(MaterialTheme.colorScheme.surface)
         ) {
             val (body, actionButtons) = createRefs()
             val sideMargin = dimensionResource(id = R.dimen.side_margin)
@@ -75,14 +75,14 @@ fun PrivacyDisclaimerScreen(
                 Text(
                     text = stringResource(id = R.string.privacy_disclaimer_title),
                     fontSize = 24.sp,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
                     text = stringResource(id = R.string.privacy_disclaimer_body),
                     fontSize = 14.sp,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.padding(top = 10.dp)
                 )
 
@@ -93,7 +93,7 @@ fun PrivacyDisclaimerScreen(
                         style =
                             TextStyle(
                                 fontSize = 12.sp,
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 textDecoration = TextDecoration.Underline
                             )
                     )
@@ -105,7 +105,8 @@ fun PrivacyDisclaimerScreen(
                             Modifier.align(Alignment.CenterVertically)
                                 .padding(start = 2.dp, top = 2.dp)
                                 .width(10.dp)
-                                .height(10.dp)
+                                .height(10.dp),
+                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                     )
                 }
             }
@@ -124,8 +125,8 @@ fun PrivacyDisclaimerScreen(
                     onClick = onAcceptClicked::invoke,
                     colors =
                         ButtonDefaults.buttonColors(
-                            contentColor = Color.White,
-                            containerColor = colorResource(R.color.blue)
+                            contentColor = MaterialTheme.colorScheme.onPrimary,
+                            containerColor = MaterialTheme.colorScheme.primary
                         )
                 )
             }

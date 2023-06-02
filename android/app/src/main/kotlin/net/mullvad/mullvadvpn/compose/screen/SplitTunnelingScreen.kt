@@ -92,7 +92,7 @@ fun SplitTunnelingScreen(
     val focusManager = LocalFocusManager.current
 
     CollapsingToolbarScaffold(
-        backgroundColor = MaterialTheme.colorScheme.background,
+        backgroundColor = MaterialTheme.colorScheme.surface,
         modifier = Modifier.fillMaxSize(),
         state = state,
         scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
@@ -104,7 +104,7 @@ fun SplitTunnelingScreen(
                     whenExpanded = Alignment.BottomStart
                 )
             CollapsingTopBar(
-                backgroundColor = MaterialTheme.colorScheme.background,
+                backgroundColor = MaterialTheme.colorScheme.surface,
                 onBackClicked = { onBackClick() },
                 title = stringResource(id = R.string.split_tunneling),
                 progress = progress,

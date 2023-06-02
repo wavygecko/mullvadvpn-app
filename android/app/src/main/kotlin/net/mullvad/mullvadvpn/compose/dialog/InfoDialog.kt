@@ -13,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +25,8 @@ import net.mullvad.mullvadvpn.compose.button.ActionButton
 import net.mullvad.mullvadvpn.compose.extensions.toAnnotatedString
 import net.mullvad.mullvadvpn.lib.theme.AppTheme
 import net.mullvad.mullvadvpn.lib.theme.Dimens
+import net.mullvad.mullvadvpn.compose.component.HtmlText
+import net.mullvad.mullvadvpn.lib.theme.AppTheme
 
 @Preview
 @Composable
@@ -46,7 +50,7 @@ fun InfoDialog(message: String, additionalInfo: String? = null, onDismiss: () ->
                 modifier = Modifier.fillMaxWidth().height(Dimens.dialogIconHeight),
                 painter = painterResource(id = R.drawable.icon_info),
                 contentDescription = "",
-                tint = MaterialTheme.colorScheme.onBackground
+                tint = MaterialTheme.colorScheme.onSurface
             )
         },
         text = {
@@ -55,7 +59,7 @@ fun InfoDialog(message: String, additionalInfo: String? = null, onDismiss: () ->
             ) {
                 Text(
                     text = message,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -65,7 +69,7 @@ fun InfoDialog(message: String, additionalInfo: String? = null, onDismiss: () ->
                         HtmlCompat.fromHtml(additionalInfo, HtmlCompat.FROM_HTML_MODE_COMPACT)
                     Text(
                         text = htmlFormattedString.toAnnotatedString(),
-                        color = MaterialTheme.colorScheme.onBackground,
+                        color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.fillMaxWidth()
                     )
@@ -79,7 +83,7 @@ fun InfoDialog(message: String, additionalInfo: String? = null, onDismiss: () ->
                 colors =
                     ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
                     ),
                 onClick = onDismiss,
             )
@@ -89,6 +93,6 @@ fun InfoDialog(message: String, additionalInfo: String? = null, onDismiss: () ->
                 dismissOnClickOutside = true,
                 dismissOnBackPress = true,
             ),
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.surface
     )
 }

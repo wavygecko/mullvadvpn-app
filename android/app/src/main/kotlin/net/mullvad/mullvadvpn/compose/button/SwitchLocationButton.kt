@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,8 +43,11 @@ fun SwitchLocationButton(
         onClick = onClick,
         colors =
             ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.inverseSurface.copy(alpha = Alpha20),
-                contentColor = MaterialTheme.colorScheme.inverseSurface
+                containerColor =
+                    MaterialTheme.colorScheme.inverseSurface.copy(alpha = Alpha20).compositeOver(
+                        MaterialTheme.colorScheme.primary
+                    ),
+                contentColor = MaterialTheme.colorScheme.inverseOnSurface
             ),
         modifier = modifier
     ) {

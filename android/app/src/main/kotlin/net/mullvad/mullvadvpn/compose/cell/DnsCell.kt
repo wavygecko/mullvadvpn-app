@@ -8,8 +8,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,12 +44,12 @@ fun DnsCell(
                 Icon(
                     painter = painterResource(id = R.drawable.icon_alert),
                     contentDescription = stringResource(id = R.string.confirm_local_dns),
-                    tint = MaterialTheme.colorScheme.errorContainer
+                    tint = MaterialTheme.colorScheme.scrim
                 )
             }
         },
         onCellClicked = { onClick.invoke() },
-        background = colorResource(id = R.color.blue20),
+        background = MaterialTheme.colorScheme.secondaryContainer,
         startPadding = startPadding,
         modifier = modifier
     )
@@ -62,7 +60,7 @@ private fun DnsTitle(address: String, modifier: Modifier = Modifier) {
     val textSize = dimensionResource(id = R.dimen.text_medium).value.sp
     Text(
         text = address,
-        color = Color.White,
+        color = MaterialTheme.colorScheme.onSurface,
         fontSize = textSize,
         fontStyle = FontStyle.Normal,
         textAlign = TextAlign.Start,

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -23,16 +24,16 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import net.mullvad.mullvadvpn.lib.theme.AlphaInactive
 import net.mullvad.mullvadvpn.lib.theme.AlphaVisible
-import net.mullvad.mullvadvpn.lib.theme.MullvadGreen
-import net.mullvad.mullvadvpn.lib.theme.MullvadRed
-import net.mullvad.mullvadvpn.lib.theme.MullvadWhite
+import net.mullvad.mullvadvpn.lib.theme.AppTheme
 
 @Preview
 @Composable
 private fun PreviewSwitch() {
-    Column {
-        CellSwitch(isChecked = true, onCheckedChange = null)
-        CellSwitch(isChecked = false, onCheckedChange = null, isEnabled = false)
+    AppTheme {
+        Column {
+            CellSwitch(isChecked = true, onCheckedChange = null)
+            CellSwitch(isChecked = false, onCheckedChange = null, isEnabled = false)
+        }
     }
 }
 
@@ -43,9 +44,9 @@ fun CellSwitch(
     modifier: Modifier = Modifier,
     scale: Float = 1f,
     isEnabled: Boolean = true,
-    thumbCheckedTrackColor: Color = MullvadGreen,
-    thumbUncheckedTrackColor: Color = MullvadRed,
-    thumbColor: Color = MullvadWhite
+    thumbCheckedTrackColor: Color = MaterialTheme.colorScheme.outline,
+    thumbUncheckedTrackColor: Color = MaterialTheme.colorScheme.outlineVariant,
+    thumbColor: Color = MaterialTheme.colorScheme.onPrimary
 ) {
     val gapBetweenThumbAndTrackEdge: Dp = 2.dp
     val width: Dp = 46.dp

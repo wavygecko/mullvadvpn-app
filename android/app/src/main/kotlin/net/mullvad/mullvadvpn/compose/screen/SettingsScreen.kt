@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -75,7 +76,7 @@ fun SettingsScreen(
     }
 
     CollapsableAwareToolbarScaffold(
-        backgroundColor = MaterialTheme.colorScheme.background,
+        backgroundColor = MaterialTheme.colorScheme.surface,
         modifier = Modifier.fillMaxSize(),
         state = state,
         scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
@@ -87,7 +88,7 @@ fun SettingsScreen(
                     whenExpanded = Alignment.BottomStart
                 )
             CollapsingTopBar(
-                backgroundColor = MaterialTheme.colorScheme.secondary,
+                backgroundColor = MaterialTheme.colorScheme.surface,
                 onBackClicked = { onBackClick() },
                 title = stringResource(id = R.string.settings),
                 progress = progress,
@@ -161,9 +162,10 @@ fun SettingsScreen(
                     Text(
                         text = stringResource(id = R.string.update_available_footer),
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSecondary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         modifier =
-                            Modifier.background(MaterialTheme.colorScheme.secondary)
+                            Modifier.fillMaxWidth()
+                                .background(MaterialTheme.colorScheme.surface)
                                 .padding(
                                     start = Dimens.cellStartPadding,
                                     top = Dimens.cellTopPadding,
@@ -187,7 +189,14 @@ fun SettingsScreen(
                     val faqGuideLabel = stringResource(id = R.string.faqs_and_guides)
                     NavigationComposeCell(
                         title = faqGuideLabel,
-                        bodyView = @Composable { DefaultExternalLinkView(faqGuideLabel) },
+                        bodyView =
+                            @Composable {
+                                DefaultExternalLinkView(
+                                    faqGuideLabel,
+                                    colorFilter =
+                                        ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
+                                )
+                            },
                         onClick = {
                             context.openLink(
                                 Uri.parse(context.resources.getString(R.string.faqs_and_guides_url))
@@ -201,7 +210,13 @@ fun SettingsScreen(
                 val privacyPolicyLabel = stringResource(id = R.string.privacy_policy_label)
                 NavigationComposeCell(
                     title = privacyPolicyLabel,
-                    bodyView = @Composable { DefaultExternalLinkView(privacyPolicyLabel) },
+                    bodyView =
+                        @Composable {
+                            DefaultExternalLinkView(
+                                privacyPolicyLabel,
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
+                            )
+                        },
                     onClick = {
                         context.openLink(
                             Uri.parse(

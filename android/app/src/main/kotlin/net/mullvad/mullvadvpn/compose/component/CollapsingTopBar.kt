@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -34,7 +35,7 @@ import net.mullvad.mullvadvpn.lib.theme.AppTheme
 private fun PreviewTopBar() {
     AppTheme {
         CollapsingTopBar(
-            backgroundColor = MaterialTheme.colorScheme.secondary,
+            backgroundColor = MaterialTheme.colorScheme.surface,
             onBackClicked = {},
             title = "View title",
             progress = 1.0f,
@@ -71,14 +72,15 @@ fun CollapsingTopBar(
         onClick = onBackClicked,
         colors =
             ButtonDefaults.buttonColors(
-                contentColor = Color.White,
-                containerColor = backgroundColor
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                containerColor = MaterialTheme.colorScheme.surface
             ),
         shape = MaterialTheme.shapes.small
     ) {
         Image(
             painter = painterResource(id = backIcon ?: R.drawable.icon_back),
             contentDescription = stringResource(id = R.string.back),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
             modifier =
                 Modifier.rotate(if (shouldRotateBackButtonDown) 270f else 0f)
                     .width(iconSize)
@@ -89,7 +91,11 @@ fun CollapsingTopBar(
     Text(
         text = title,
         style =
-            TextStyle(color = Color.White, fontWeight = FontWeight.Bold, textAlign = TextAlign.End),
+            TextStyle(
+                color = MaterialTheme.colorScheme.onSurface,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.End
+            ),
         modifier =
             modifier.padding(
                 start = sideMargin,

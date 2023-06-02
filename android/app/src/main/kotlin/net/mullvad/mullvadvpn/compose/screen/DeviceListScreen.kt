@@ -18,7 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,13 +33,9 @@ import net.mullvad.mullvadvpn.compose.state.DeviceListItemUiState
 import net.mullvad.mullvadvpn.compose.state.DeviceListUiState
 import net.mullvad.mullvadvpn.lib.common.util.capitalizeFirstCharOfEachWord
 import net.mullvad.mullvadvpn.lib.common.util.parseAsDateTime
+import net.mullvad.mullvadvpn.lib.theme.AlphaInactive
 import net.mullvad.mullvadvpn.lib.theme.AppTheme
 import net.mullvad.mullvadvpn.lib.theme.Dimens
-import net.mullvad.mullvadvpn.lib.theme.MullvadBlue
-import net.mullvad.mullvadvpn.lib.theme.MullvadGreen
-import net.mullvad.mullvadvpn.lib.theme.MullvadGreen40
-import net.mullvad.mullvadvpn.lib.theme.MullvadWhite
-import net.mullvad.mullvadvpn.lib.theme.MullvadWhite80
 import net.mullvad.mullvadvpn.model.Device
 import net.mullvad.mullvadvpn.util.formatDate
 
@@ -89,11 +84,11 @@ fun DeviceListScreen(
         )
     }
 
-    val topColor = colorResource(R.color.blue)
+    val topColor = MaterialTheme.colorScheme.primary
     ScaffoldWithTopBar(
         topBarColor = topColor,
         statusBarColor = topColor,
-        navigationBarColor = colorResource(id = R.color.darkBlue),
+        navigationBarColor = MaterialTheme.colorScheme.surface,
         onSettingsClicked = onSettingsClicked,
         onAccountClicked = null,
     ) {
@@ -102,7 +97,7 @@ fun DeviceListScreen(
                 Modifier.fillMaxHeight()
                     .fillMaxWidth()
                     .padding(it)
-                    .background(MaterialTheme.colorScheme.secondary)
+                    .background(MaterialTheme.colorScheme.surface)
         ) {
             val (content, buttons) = createRefs()
 
@@ -159,7 +154,8 @@ fun DeviceListScreen(
                                             R.string.max_devices_resolved_title
                                         }
                                 ),
-                            style = MaterialTheme.typography.headlineSmall
+                            style = MaterialTheme.typography.headlineSmall,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
 
                         Text(
@@ -176,7 +172,8 @@ fun DeviceListScreen(
                             modifier =
                                 Modifier.wrapContentHeight()
                                     .animateContentSize()
-                                    .padding(top = 8.dp)
+                                    .padding(top = 8.dp),
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
 
@@ -228,10 +225,12 @@ fun DeviceListScreen(
                     isEnabled = state.hasTooManyDevices.not() && state.isLoading.not(),
                     colors =
                         ButtonDefaults.buttonColors(
-                            containerColor = MullvadGreen,
-                            disabledContainerColor = MullvadGreen40,
-                            disabledContentColor = MullvadWhite80,
-                            contentColor = MullvadWhite
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            disabledContainerColor =
+                                MaterialTheme.colorScheme.secondary.copy(alpha = AlphaInactive),
+                            disabledContentColor =
+                                MaterialTheme.colorScheme.onSecondary.copy(alpha = AlphaInactive),
+                            contentColor = MaterialTheme.colorScheme.onSecondary
                         )
                 )
 
@@ -240,8 +239,8 @@ fun DeviceListScreen(
                     onClick = onBackClick,
                     colors =
                         ButtonDefaults.buttonColors(
-                            containerColor = MullvadBlue,
-                            contentColor = MullvadWhite
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
                         ),
                     modifier = Modifier.padding(top = 16.dp)
                 )

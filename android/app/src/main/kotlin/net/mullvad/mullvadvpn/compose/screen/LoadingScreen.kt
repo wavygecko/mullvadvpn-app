@@ -9,11 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.mullvad.mullvadvpn.R
 import net.mullvad.mullvadvpn.compose.component.ScaffoldWithTopBar
+import net.mullvad.mullvadvpn.lib.theme.AlphaInactive
 
 @Preview
 @Composable
@@ -30,7 +32,7 @@ private fun PreviewLoadingScreen() {
 
 @Composable
 fun LoadingScreen(onSettingsCogClicked: () -> Unit = {}) {
-    val backgroundColor = colorResource(id = R.color.blue)
+    val backgroundColor = MaterialTheme.colorScheme.primary
 
     ScaffoldWithTopBar(
         topBarColor = backgroundColor,
@@ -61,12 +63,13 @@ fun LoadingScreen(onSettingsCogClicked: () -> Unit = {}) {
                         painter = painterResource(id = R.drawable.logo_text),
                         contentDescription = "",
                         alpha = 0.6f,
+                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onPrimary),
                         modifier = Modifier.padding(top = 12.dp).height(18.dp)
                     )
                     Text(
                         text = stringResource(id = R.string.connecting_to_daemon),
                         fontSize = 13.sp,
-                        color = colorResource(id = R.color.white40),
+                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = AlphaInactive),
                         modifier = Modifier.padding(top = 12.dp)
                     )
                 }

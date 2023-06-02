@@ -44,6 +44,7 @@ import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -60,6 +61,8 @@ import net.mullvad.mullvadvpn.compose.state.LoginState
 import net.mullvad.mullvadvpn.compose.state.LoginState.*
 import net.mullvad.mullvadvpn.compose.state.LoginUiState
 import net.mullvad.mullvadvpn.compose.util.accountTokenVisualTransformation
+import net.mullvad.mullvadvpn.lib.theme.AlphaDisabled
+import net.mullvad.mullvadvpn.lib.theme.AlphaInactive
 import net.mullvad.mullvadvpn.lib.theme.AlphaTopBar
 import net.mullvad.mullvadvpn.lib.theme.AppTheme
 import net.mullvad.mullvadvpn.lib.theme.Dimens
@@ -238,8 +241,16 @@ private fun LoginContent(
             onClick = { onLoginClick(uiState.accountNumberInput) },
             colors =
                 ButtonDefaults.buttonColors(
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    disabledContentColor =
+                        MaterialTheme.colorScheme.onPrimary
+                            .copy(alpha = AlphaInactive)
+                            .compositeOver(MaterialTheme.colorScheme.primary),
+                    disabledContainerColor =
+                        MaterialTheme.colorScheme.onPrimary
+                            .copy(alpha = AlphaDisabled)
+                            .compositeOver(MaterialTheme.colorScheme.primary)
                 ),
             text = stringResource(id = R.string.login_title),
             modifier = Modifier.padding(bottom = Dimens.mediumPadding)
