@@ -336,6 +336,8 @@ export default class AppRenderer {
   public openUrl = (url: string) => IpcRendererEventChannel.app.openUrl(url);
   public showOpenDialog = (options: Electron.OpenDialogOptions) =>
     IpcRendererEventChannel.app.showOpenDialog(options);
+  public setDisplayMap = (displayMap: boolean): void =>
+    IpcRendererEventChannel.guiSettings.setDisplayMap(displayMap);
 
   public login = async (accountToken: AccountToken) => {
     const actions = this.reduxActions;
