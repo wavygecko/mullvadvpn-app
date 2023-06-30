@@ -16,8 +16,6 @@ import Map from './Map';
 import NotificationArea from './NotificationArea';
 import TunnelControl from './TunnelControl';
 
-type MarkerOrSpinner = 'marker' | 'spinner' | 'none';
-
 const StyledContainer = styled(Container)({
   position: 'relative',
 });
@@ -60,22 +58,8 @@ export default function Connect() {
 
   const displayMap = useSelector((state) => state.settings.guiSettings.displayMap);
 
-  const showMarkerOrSpinner = useMemo<MarkerOrSpinner>(() => {
-    if (!connection.latitude) {
-      return 'none';
-    }
-
-    switch (connection.status.state) {
-      case 'error':
-        return 'none';
-      case 'connecting':
-      case 'disconnecting':
-        return 'spinner';
-      case 'connected':
-      case 'disconnected':
-        return 'marker';
-    }
-  }, [connection.latitude, connection.status.state]);
+  const showSpinner =
+    connection.status.state === 'connecting' || connection.status.state === 'disconnecting';
 
   const onSelectLocation = useCallback(() => {
     history.push(RoutePath.selectLocation, { transition: transitions.show });
@@ -122,10 +106,7 @@ export default function Connect() {
           <StyledNotificationArea />
 
           <StyledMain>
-            {/* show spinner when connecting */}
-            {showMarkerOrSpinner === 'spinner' ? (
-              <StatusIcon source="icon-spinner" height={60} width={60} />
-            ) : null}
+            {showSpinner ? <StatusIcon source="icon-spinner" height={60} width={60} /> : null}
 
             <TunnelControl
               tunnelState={connection.status}
