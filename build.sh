@@ -5,7 +5,7 @@
 
 set -eu
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
 source scripts/utils/log
@@ -28,11 +28,13 @@ SIGN="false"
 # If a macOS build should create an installer artifact working on both
 # Intel and Apple Silicon Macs
 UNIVERSAL="false"
+# If build script should package electron GUI
+GUI="true"
 
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --optimize) OPTIMIZE="true";;
-        --sign)     SIGN="true";;
+        --optimize) OPTIMIZE="true" ;;
+        --sign) SIGN="true" ;;
         --universal)
             if [[ "$(uname -s)" != "Darwin" ]]; then
                 log_error "--universal only works on macOS"
@@ -40,6 +42,7 @@ while [[ "$#" -gt 0 ]]; do
             fi
             UNIVERSAL="true"
             ;;
+        --nogui) GUI="false" ;;
         *)
             log_error "Unknown parameter: $1"
             exit 1
@@ -90,7 +93,7 @@ else
 fi
 
 if [[ "$SIGN" == "true" ]]; then
-    if [[ $(git diff --shortstat 2> /dev/null | tail -n1) != "" ]]; then
+    if [[ $(git diff --shortstat 2>/dev/null | tail -n1) != "" ]]; then
         log_error "Dirty working directory!"
         log_error "Will only build a signed app in a clean working directory"
         exit 1
@@ -167,8 +170,7 @@ function sign_win {
                 -fd sha256 -d "Mullvad VPN" \
                 -du "https://github.com/mullvad/mullvadvpn-app#readme" \
                 -f "$CERT_FILE" \
-                -p "$CERT_PASSPHRASE" "$binary"
-            then
+                -p "$CERT_PASSPHRASE" "$binary"; then
                 break
             fi
 
@@ -335,29 +337,33 @@ if [[ "$(uname -s)" == "Darwin" || "$(uname -s)" == "Linux" ]]; then
 fi
 
 log_info "Updating relays.json..."
-cargo run --bin relay_list "${CARGO_ARGS[@]}" > build/relays.json
-
-
-log_header "Installing JavaScript dependencies"
-
-pushd gui
-npm ci
+cargo run --bin relay_list "${CARGO_ARGS[@]}" >build/relays.json
 
 log_header "Packing Mullvad VPN $PRODUCT_VERSION artifact(s)"
 
 case "$(uname -s)" in
-    Linux*)     npm run pack:linux -- "${NPM_PACK_ARGS[@]}";;
-    Darwin*)    npm run pack:mac -- "${NPM_PACK_ARGS[@]}";;
-    MINGW*)     npm run pack:win -- "${NPM_PACK_ARGS[@]}";;
+    Linux*) echo "Packaging app for Linux" ;;
+    Darwin*) echo "Packaging app for Darwin" ;;
+    MINGW*) echo "Packaging app for MINGW" ;;
 esac
-popd
 
-# sign installer on Windows
-if [[ "$SIGN" == "true" && "$(uname -s)" == "MINGW"* ]]; then
-    for installer_path in dist/*"$PRODUCT_VERSION"*.exe; do
-        log_info "Signing $installer_path"
-        sign_win "$installer_path"
-    done
+if [[ "$GUI" == "false" ]]; then
+    echo "Not building gui."
+    ./package.sh --version "$PRODUCT_VERSION"
+else
+    log_header "Installing JavaScript dependencies"
+
+    pushd gui
+    npm ci
+
+    log_header "Packing Mullvad VPN $PRODUCT_VERSION artifact(s)"
+
+    case "$(uname -s)" in
+        Linux*) npm run pack:linux -- "${NPM_PACK_ARGS[@]}" ;;
+        Darwin*) npm run pack:mac -- "${NPM_PACK_ARGS[@]}" ;;
+        MINGW*) npm run pack:win -- "${NPM_PACK_ARGS[@]}" ;;
+    esac
+    popd
 fi
 
 log_success "**********************************"
