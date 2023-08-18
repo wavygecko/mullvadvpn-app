@@ -154,6 +154,16 @@
 		5871FBA0254C26C00051A0A4 /* NSRegularExpression+IPAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5871FB9F254C26BF0051A0A4 /* NSRegularExpression+IPAddress.swift */; };
 		58727283265D173C00F315B2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58727282265D173C00F315B2 /* LaunchScreen.storyboard */; };
 		5872D6E8286304DE00DB5F4E /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5872D6E7286304DE00DB5F4E /* TermsOfService.swift */; };
+		5873F6B12A8F92D0004AFE58 /* ProductFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5873F6B02A8F92D0004AFE58 /* ProductFetcher.swift */; };
+		5873F6B52A8F9319004AFE58 /* SKPaymentQueue+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5873F6B42A8F9319004AFE58 /* SKPaymentQueue+.swift */; };
+		5873F6B72A8F9333004AFE58 /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5873F6B62A8F9333004AFE58 /* AppStore.swift */; };
+		5873F6B92A8F9963004AFE58 /* SKProductsRequest+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5873F6B82A8F9963004AFE58 /* SKProductsRequest+.swift */; };
+		5873F6BB2A8F9F09004AFE58 /* Task+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5873F6BA2A8F9F09004AFE58 /* Task+.swift */; };
+		5873F6BD2A8F9F49004AFE58 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5873F6BC2A8F9F49004AFE58 /* UIApplication+.swift */; };
+		5873F6BF2A8FB296004AFE58 /* SKReceiptRefreshRequest+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5873F6BE2A8FB295004AFE58 /* SKReceiptRefreshRequest+.swift */; };
+		5873F6C12A8FBCFD004AFE58 /* ReceiptFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5873F6C02A8FBCFD004AFE58 /* ReceiptFetcher.swift */; };
+		5873F6C32A8FD77C004AFE58 /* AppStoreAPIServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5873F6C22A8FD77C004AFE58 /* AppStoreAPIServiceProtocol.swift */; };
+		5873F6C52A8FD7B0004AFE58 /* AppStoreAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5873F6C42A8FD7B0004AFE58 /* AppStoreAPIService.swift */; };
 		587425C12299833500CA2045 /* RootContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587425C02299833500CA2045 /* RootContainerViewController.swift */; };
 		5875960A26F371FC00BF6711 /* Tunnel+Messaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5875960926F371FC00BF6711 /* Tunnel+Messaging.swift */; };
 		5877D70F282137E8002FCFC7 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF2C02281BDE02009EF542 /* SettingsManager.swift */; };
@@ -1060,6 +1070,16 @@
 		5871FB9F254C26BF0051A0A4 /* NSRegularExpression+IPAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+IPAddress.swift"; sourceTree = "<group>"; };
 		58727282265D173C00F315B2 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5872D6E7286304DE00DB5F4E /* TermsOfService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
+		5873F6B02A8F92D0004AFE58 /* ProductFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFetcher.swift; sourceTree = "<group>"; };
+		5873F6B42A8F9319004AFE58 /* SKPaymentQueue+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKPaymentQueue+.swift"; sourceTree = "<group>"; };
+		5873F6B62A8F9333004AFE58 /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
+		5873F6B82A8F9963004AFE58 /* SKProductsRequest+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKProductsRequest+.swift"; sourceTree = "<group>"; };
+		5873F6BA2A8F9F09004AFE58 /* Task+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Task+.swift"; sourceTree = "<group>"; };
+		5873F6BC2A8F9F49004AFE58 /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
+		5873F6BE2A8FB295004AFE58 /* SKReceiptRefreshRequest+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKReceiptRefreshRequest+.swift"; sourceTree = "<group>"; };
+		5873F6C02A8FBCFD004AFE58 /* ReceiptFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptFetcher.swift; sourceTree = "<group>"; };
+		5873F6C22A8FD77C004AFE58 /* AppStoreAPIServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreAPIServiceProtocol.swift; sourceTree = "<group>"; };
+		5873F6C42A8FD7B0004AFE58 /* AppStoreAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreAPIService.swift; sourceTree = "<group>"; };
 		587425C02299833500CA2045 /* RootContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootContainerViewController.swift; sourceTree = "<group>"; };
 		5875960926F371FC00BF6711 /* Tunnel+Messaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tunnel+Messaging.swift"; sourceTree = "<group>"; };
 		5877F94D2A0A59AA0052D9E9 /* NotificationResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationResponse.swift; sourceTree = "<group>"; };
@@ -1936,6 +1956,7 @@
 		5846226F26E229CD0035F7C2 /* StorePaymentManager */ = {
 			isa = PBXGroup;
 			children = (
+				5873F6AD2A8F92A4004AFE58 /* v2 */,
 				5878A27629093A4F0096FC88 /* StorePaymentBlockObserver.swift */,
 				585E820227F3285E00939F0E /* SendStoreReceiptOperation.swift */,
 				5878A27429093A310096FC88 /* StorePaymentEvent.swift */,
@@ -2013,6 +2034,23 @@
 				5846226426E0D9630035F7C2 /* ProductsRequestOperation.swift */,
 			);
 			path = Operations;
+			sourceTree = "<group>";
+		};
+		5873F6AD2A8F92A4004AFE58 /* v2 */ = {
+			isa = PBXGroup;
+			children = (
+				5873F6B62A8F9333004AFE58 /* AppStore.swift */,
+				5873F6B02A8F92D0004AFE58 /* ProductFetcher.swift */,
+				5873F6C02A8FBCFD004AFE58 /* ReceiptFetcher.swift */,
+				5873F6B82A8F9963004AFE58 /* SKProductsRequest+.swift */,
+				5873F6BE2A8FB295004AFE58 /* SKReceiptRefreshRequest+.swift */,
+				5873F6B42A8F9319004AFE58 /* SKPaymentQueue+.swift */,
+				5873F6BA2A8F9F09004AFE58 /* Task+.swift */,
+				5873F6BC2A8F9F49004AFE58 /* UIApplication+.swift */,
+				5873F6C22A8FD77C004AFE58 /* AppStoreAPIServiceProtocol.swift */,
+				5873F6C42A8FD7B0004AFE58 /* AppStoreAPIService.swift */,
+			);
+			path = v2;
 			sourceTree = "<group>";
 		};
 		587B75422669034500DEF7E9 /* Notification Providers */ = {
@@ -3511,10 +3549,12 @@
 				5802EBC92A8E45BA00E5CE4C /* ApplicationRouterDelegate.swift in Sources */,
 				58CCA010224249A1004F3011 /* TunnelViewController.swift in Sources */,
 				58B26E22294351EA00D5980C /* InAppNotificationProvider.swift in Sources */,
+				5873F6B12A8F92D0004AFE58 /* ProductFetcher.swift in Sources */,
 				5893716A28817A45004EE76C /* DeviceManagementViewController.swift in Sources */,
 				58435AC229CB2A350099C71B /* LocationCellFactory.swift in Sources */,
 				58BFA5C622A7C97F00A6173D /* RelayCacheTracker.swift in Sources */,
 				E158B360285381C60002F069 /* String+AccountFormatting.swift in Sources */,
+				5873F6B72A8F9333004AFE58 /* AppStore.swift in Sources */,
 				582BB1B1229569620055B6EF /* UINavigationBar+Appearance.swift in Sources */,
 				58ACF6492655365700ACE4B7 /* PreferencesViewController.swift in Sources */,
 				A9D96B1A2A8247C100A5C673 /* MigrationManager.swift in Sources */,
@@ -3524,6 +3564,7 @@
 				0697D6E728F01513007A9E99 /* TransportMonitor.swift in Sources */,
 				58968FAE28743E2000B799DC /* TunnelInteractor.swift in Sources */,
 				587C93002986E2B600FB9664 /* TermsOfServiceCoordinator.swift in Sources */,
+				5873F6C32A8FD77C004AFE58 /* AppStoreAPIServiceProtocol.swift in Sources */,
 				5864AF0929C78850005B0CD9 /* PreferencesCellFactory.swift in Sources */,
 				587B7536266528A200DEF7E9 /* NotificationManager.swift in Sources */,
 				5820EDA9288FE064006BF4E4 /* DeviceManagementInteractor.swift in Sources */,
@@ -3587,6 +3628,7 @@
 				58DF28A52417CB4B00E836B0 /* StorePaymentManager.swift in Sources */,
 				A92ECC212A77FFAF0052F1B1 /* TunnelSettings.swift in Sources */,
 				583DA21425FA4B5C00318683 /* LocationDataSource.swift in Sources */,
+				5873F6C52A8FD7B0004AFE58 /* AppStoreAPIService.swift in Sources */,
 				587EB6742714520600123C75 /* PreferencesDataSourceDelegate.swift in Sources */,
 				582BB1AF229566420055B6EF /* SettingsCell.swift in Sources */,
 				58F3C0A4249CB069003E76BE /* HeaderBarView.swift in Sources */,
@@ -3617,7 +3659,9 @@
 				5878F50029CDA742003D4BE2 /* UIView+AutoLayoutBuilder.swift in Sources */,
 				583FE01029C0F532006E85F9 /* CustomSplitViewController.swift in Sources */,
 				58EF580B25D69D7A00AEBA94 /* ProblemReportSubmissionOverlayView.swift in Sources */,
+				5873F6BD2A8F9F49004AFE58 /* UIApplication+.swift in Sources */,
 				7A42DECD2A09064C00B209BE /* SelectableSettingsCell.swift in Sources */,
+				5873F6C12A8FBCFD004AFE58 /* ReceiptFetcher.swift in Sources */,
 				5892A45E265FABFF00890742 /* EmptyTableViewHeaderFooterView.swift in Sources */,
 				580909D32876D09A0078138D /* RevokedDeviceViewController.swift in Sources */,
 				5835B7CC233B76CB0096D79F /* TunnelManager.swift in Sources */,
@@ -3631,11 +3675,13 @@
 				58B26E262943522400D5980C /* NotificationProvider.swift in Sources */,
 				58CE5E64224146200008646E /* AppDelegate.swift in Sources */,
 				5878A27329091D6D0096FC88 /* TunnelBlockObserver.swift in Sources */,
+				5873F6B92A8F9963004AFE58 /* SKProductsRequest+.swift in Sources */,
 				5872D6E8286304DE00DB5F4E /* TermsOfService.swift in Sources */,
 				58E0A98827C8F46300FE6BDD /* Tunnel.swift in Sources */,
 				586891CD29D452E4002A8278 /* SafariCoordinator.swift in Sources */,
 				58ACF64F26567A7100ACE4B7 /* CustomSwitchContainer.swift in Sources */,
 				58EE2E3A272FF814003BFF93 /* SettingsDataSource.swift in Sources */,
+				5873F6B52A8F9319004AFE58 /* SKPaymentQueue+.swift in Sources */,
 				F0E8E4C12A602CCB00ED26A3 /* AccountDeletionContentView.swift in Sources */,
 				58B26E1E2943514300D5980C /* InAppNotificationDescriptor.swift in Sources */,
 				58421032282E42B000F24E46 /* UpdateDeviceDataOperation.swift in Sources */,
@@ -3646,6 +3692,7 @@
 				58B26E282943527300D5980C /* SystemNotificationProvider.swift in Sources */,
 				58CCA01222424D11004F3011 /* SettingsViewController.swift in Sources */,
 				F0E8CC0A2A4EE127007ED3B4 /* SetupAccountCompletedContentView.swift in Sources */,
+				5873F6BF2A8FB296004AFE58 /* SKReceiptRefreshRequest+.swift in Sources */,
 				581DA2752A1E283E0046ED47 /* WgKeyRotation.swift in Sources */,
 				7A83C4022A57FAA800DFB83A /* SettingsDNSInfoCell.swift in Sources */,
 				06410DFE292CE18F00AFC18C /* KeychainSettingsStore.swift in Sources */,
@@ -3673,6 +3720,7 @@
 				584D26C4270C855B004EA533 /* PreferencesDataSource.swift in Sources */,
 				58FD5BF024238EB300112C88 /* SKProduct+Formatting.swift in Sources */,
 				58B43C1925F77DB60002C8C3 /* TunnelControlView.swift in Sources */,
+				5873F6BB2A8F9F09004AFE58 /* Task+.swift in Sources */,
 				5811DE50239014550011EB53 /* NEVPNStatus+Debug.swift in Sources */,
 				7A21DACF2A30AA3700A787A9 /* UITextField+Appearance.swift in Sources */,
 				58C3A4B222456F1B00340BDB /* AccountInputGroupView.swift in Sources */,
