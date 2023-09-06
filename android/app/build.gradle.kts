@@ -30,7 +30,7 @@ android {
     defaultConfig {
         val localProperties = gradleLocalProperties(rootProject.projectDir)
 
-        applicationId = "net.mullvad.mullvadvpn"
+        applicationId = "net.mullvad.mullvadvpn.devmole"
         minSdk = Versions.Android.minSdkVersion
         targetSdk = Versions.Android.targetSdkVersion
         versionCode = generateVersionCode(localProperties)
