@@ -261,8 +261,8 @@ dependencies {
     implementation(Dependencies.Kotlin.stdlib)
     implementation(Dependencies.KotlinX.coroutinesAndroid)
 
-    //Billing library
-    implementation(Dependencies.billingClient)
+    // Billing
+    implementation(project(Dependencies.Mullvad.billingLib))
 
     // UI tooling
     implementation(Dependencies.Compose.uiToolingPreview)
