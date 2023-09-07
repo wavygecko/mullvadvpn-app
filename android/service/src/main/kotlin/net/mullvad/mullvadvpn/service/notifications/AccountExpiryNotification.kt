@@ -12,7 +12,6 @@ import kotlin.properties.Delegates.observable
 import kotlinx.coroutines.delay
 import net.mullvad.mullvadvpn.lib.common.constant.BuildTypes
 import net.mullvad.mullvadvpn.lib.common.constant.MAIN_ACTIVITY_CLASS
-import net.mullvad.mullvadvpn.lib.common.constant.MULLVAD_PACKAGE_NAME
 import net.mullvad.mullvadvpn.lib.common.util.Intermittent
 import net.mullvad.mullvadvpn.lib.common.util.JobTracker
 import net.mullvad.mullvadvpn.lib.common.util.SdkUtils
@@ -107,7 +106,7 @@ class AccountExpiryNotification(
         val intent =
             if (BuildTypes.RELEASE == BuildConfig.BUILD_TYPE) {
                 Intent().apply {
-                    setClassName(MULLVAD_PACKAGE_NAME, MAIN_ACTIVITY_CLASS)
+                    setClassName(context.packageName, MAIN_ACTIVITY_CLASS)
                     setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
                     setAction(Intent.ACTION_MAIN)
                 }
