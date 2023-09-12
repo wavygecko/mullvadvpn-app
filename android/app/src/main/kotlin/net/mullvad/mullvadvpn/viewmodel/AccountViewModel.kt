@@ -10,14 +10,17 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import net.mullvad.mullvadvpn.compose.state.AccountUiState
+import net.mullvad.mullvadvpn.lib.billing.model.BillingProduct
 import net.mullvad.mullvadvpn.repository.AccountRepository
 import net.mullvad.mullvadvpn.repository.DeviceRepository
+import net.mullvad.mullvadvpn.repository.payment.PaymentRepository
 import net.mullvad.mullvadvpn.ui.serviceconnection.ServiceConnectionManager
 import net.mullvad.mullvadvpn.ui.serviceconnection.authTokenCache
 
 class AccountViewModel(
     private var accountRepository: AccountRepository,
     private var serviceConnectionManager: ServiceConnectionManager,
+    private val paymentRepository: PaymentRepository,
     deviceRepository: DeviceRepository
 ) : ViewModel() {
 
@@ -58,6 +61,12 @@ class AccountViewModel(
 
     fun onLogoutClick() {
         accountRepository.logout()
+    }
+
+    fun onBuyGooglePlay() {
+        viewModelScope.launch {
+            paymentRepository.purchaseBillingProduct(BillingProduct("one_month", "100"))
+        }
     }
 
     sealed class ViewAction {

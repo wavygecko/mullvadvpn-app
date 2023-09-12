@@ -16,9 +16,12 @@ import net.mullvad.mullvadvpn.ui.StatusBarPainter
 import net.mullvad.mullvadvpn.ui.extension.requireMainActivity
 import net.mullvad.mullvadvpn.viewmodel.AccountViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class AccountFragment : BaseFragment(), StatusBarPainter, NavigationBarPainter {
-    private val vm by viewModel<AccountViewModel>()
+    private val vm by viewModel<AccountViewModel>(parameters = {
+        parametersOf(requireActivity())
+    })
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreateView(
@@ -35,7 +38,8 @@ class AccountFragment : BaseFragment(), StatusBarPainter, NavigationBarPainter {
                         viewActions = vm.viewActions,
                         onRedeemVoucherClick = { openRedeemVoucherFragment() },
                         onManageAccountClick = vm::onManageAccountClick,
-                        onLogoutClick = vm::onLogoutClick
+                        onLogoutClick = vm::onLogoutClick,
+                        onBuyGooglePlay = vm::onBuyGooglePlay
                     ) {
                         activity?.onBackPressed()
                     }

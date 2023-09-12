@@ -65,6 +65,7 @@ fun AccountScreen(
     onRedeemVoucherClick: () -> Unit = {},
     onManageAccountClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
+    onBuyGooglePlay: () -> Unit = {},
     onBackClick: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -149,6 +150,22 @@ fun AccountScreen(
             )
 
             Spacer(modifier = Modifier.weight(1f))
+
+            ActionButton(
+                text = "Buy Google Play",
+                onClick = onBuyGooglePlay,
+                modifier =
+                Modifier.padding(
+                    start = Dimens.sideMargin,
+                    end = Dimens.sideMargin,
+                    bottom = Dimens.screenVerticalMargin
+                ),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        containerColor = MaterialTheme.colorScheme.surface
+                    )
+            )
 
             if (BuildConfig.BUILD_TYPE != BuildTypes.RELEASE) {
                 ActionButton(
