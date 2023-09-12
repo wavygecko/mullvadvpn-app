@@ -1,6 +1,10 @@
 package net.mullvad.mullvadvpn.repository.payment
 
+import kotlinx.coroutines.flow.singleOrNull
 import net.mullvad.mullvadvpn.lib.billing.BillingRepository
+import net.mullvad.mullvadvpn.lib.billing.model.BillingProduct
+import net.mullvad.mullvadvpn.lib.billing.model.PurchaseEvent
+import net.mullvad.mullvadvpn.lib.billing.model.PurchaseFlowResult
 import net.mullvad.mullvadvpn.lib.billing.model.QueryProductResult
 
 class PaymentRepository(
@@ -12,6 +16,46 @@ class PaymentRepository(
             webPaymentAvailable = showWebPayment,
             billingPaymentAvailability = getBillingProducts()
         )
+
+    suspend fun purchaseBillingProduct(product: BillingProduct): PurchaseResult {
+        // Get transaction id
+        val transactionId = fetchTransactionId()
+
+        val result =
+            billingRepository.startPurchaseFlow(
+                productId = product.productId,
+                transactionId = transactionId
+            )
+
+        if (result is PurchaseFlowResult.Ok) {
+            // Wait for events
+            return when (val purchaseEvent = billingRepository.purchaseEvents.singleOrNull()) {
+                is PurchaseEvent.Error -> {
+                    // Return error
+                    PurchaseResult.PurchaseError
+                }
+                is PurchaseEvent.PurchaseCompleted -> {
+                    // Verify towards api
+                    if (verifyPurchase()) {
+                        PurchaseResult.PurchaseCompleted
+                    } else {
+                        PurchaseResult.VerificationError
+                    }
+                }
+                PurchaseEvent.UserCanceled -> {
+                    // Purchase aborted
+                    PurchaseResult.PurchaseCancelled
+                }
+                null -> {
+                    // Return error
+                    PurchaseResult.PurchaseError
+                }
+            }
+        } else {
+            // Return error
+            return PurchaseResult.PurchaseError
+        }
+    }
 
     private suspend fun getBillingProducts(): BillingPaymentAvailability =
         when (val result = billingRepository.queryProducts()) {
@@ -29,5 +73,10 @@ class PaymentRepository(
     private fun fetchTransactionId(): String {
         // Placeholder function
         return "BOOPITOBOP"
+    }
+
+    private fun verifyPurchase(): Boolean {
+        // Placeholder function
+        return true
     }
 }
