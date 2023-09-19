@@ -31,6 +31,7 @@ import kotlinx.coroutines.withTimeoutOrNull
 import net.mullvad.mullvadvpn.BuildConfig
 import net.mullvad.mullvadvpn.R
 import net.mullvad.mullvadvpn.compose.dialog.ChangelogDialog
+import net.mullvad.mullvadvpn.di.paymentModule
 import net.mullvad.mullvadvpn.di.uiModule
 import net.mullvad.mullvadvpn.lib.common.util.SdkUtils.isNotificationPermissionGranted
 import net.mullvad.mullvadvpn.lib.endpoint.ApiEndpointConfiguration
@@ -57,6 +58,8 @@ import net.mullvad.mullvadvpn.viewmodel.ChangelogDialogUiState
 import net.mullvad.mullvadvpn.viewmodel.ChangelogViewModel
 import org.koin.android.ext.android.getKoin
 import org.koin.core.context.loadKoinModules
+import org.koin.dsl.bind
+import org.koin.dsl.module
 
 open class MainActivity : FragmentActivity() {
     private var requestNotificationPermissionLauncher: ActivityResultLauncher<String> =
@@ -85,7 +88,13 @@ open class MainActivity : FragmentActivity() {
     private var currentDeviceState: DeviceState? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        loadKoinModules(uiModule)
+        loadKoinModules(
+            listOf(
+                uiModule,
+                paymentModule,
+                module { single { this@MainActivity } bind Activity::class }
+            )
+        )
 
         getKoin().apply {
             accountRepository = get()
