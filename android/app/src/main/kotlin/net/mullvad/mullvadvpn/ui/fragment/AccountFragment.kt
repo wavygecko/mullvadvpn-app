@@ -10,6 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import net.mullvad.mullvadvpn.R
 import net.mullvad.mullvadvpn.compose.screen.AccountScreen
+import net.mullvad.mullvadvpn.constant.IS_PLAY_BUILD
 import net.mullvad.mullvadvpn.lib.theme.AppTheme
 import net.mullvad.mullvadvpn.ui.NavigationBarPainter
 import net.mullvad.mullvadvpn.ui.StatusBarPainter
@@ -31,12 +32,16 @@ class AccountFragment : BaseFragment(), StatusBarPainter, NavigationBarPainter {
                 AppTheme {
                     val state = vm.uiState.collectAsState().value
                     AccountScreen(
+                        showSitePayment = IS_PLAY_BUILD.not(),
                         uiState = state,
                         uiSideEffect = vm.uiSideEffect,
                         enterTransitionEndAction = vm.enterTransitionEndAction,
                         onRedeemVoucherClick = { openRedeemVoucherFragment() },
                         onManageAccountClick = vm::onManageAccountClick,
                         onLogoutClick = vm::onLogoutClick,
+                        onPurchaseBillingProductClick = vm::startBillingPayment,
+                        onTryVerificationAgain = vm::verifyPurchases,
+                        onTryFetchProductsAgain = vm::fetchPaymentAvailability,
                         onBackClick = { activity?.onBackPressedDispatcher?.onBackPressed() }
                     )
                 }

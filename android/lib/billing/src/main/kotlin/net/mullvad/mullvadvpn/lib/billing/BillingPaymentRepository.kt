@@ -2,8 +2,8 @@ package net.mullvad.mullvadvpn.lib.billing
 
 import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.android.billingclient.api.Purchase
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import net.mullvad.mullvadvpn.lib.billing.extension.toPaymentProducts
@@ -109,13 +109,17 @@ class BillingPaymentRepository(private val billingRepository: BillingRepository)
         }
     }
 
-    private fun fetchTransactionId(): String? {
+    private suspend fun fetchTransactionId(): String? {
         // Placeholder function
+        // delay to simulate network request
+        delay(1500L)
         return "BOOPITOBOP"
     }
 
-    private fun verifyPurchase(purchase: Purchase): VerificationResult {
+    private suspend fun verifyPurchase(purchase: Purchase): VerificationResult {
         // Placeholder function
+        // delay ot simulate network request
+        delay(1500L)
         return VerificationResult.Success
     }
 }

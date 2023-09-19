@@ -2,6 +2,7 @@ package net.mullvad.mullvadvpn.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -84,7 +85,13 @@ class AccountViewModel(
 
     fun startBillingPayment(productId: String) {
         viewModelScope.launch {
-            paymentRepository?.purchaseBillingProduct(productId)?.collect(_purchaseResult)
+            try {
+                paymentRepository?.purchaseBillingProduct(productId)?.collect(_purchaseResult)
+            } finally {
+                // Set result as null
+                delay(2000L)
+                _purchaseResult.emit(null)
+            }
         }
     }
 
@@ -104,8 +111,8 @@ class AccountViewModel(
     private fun PaymentAvailability.toPaymentState(): PaymentState =
         when (this) {
             PaymentAvailability.Error.ServiceUnavailable,
-            PaymentAvailability.Error.BillingUnavailable -> PaymentState.BillingError
-            is PaymentAvailability.Error.Other -> PaymentState.GenericError
+            PaymentAvailability.Error.BillingUnavailable -> PaymentState.Error.BillingError
+            is PaymentAvailability.Error.Other -> PaymentState.Error.GenericError
             is PaymentAvailability.ProductsAvailable -> PaymentState.PaymentAvailable(products)
             PaymentAvailability.ProductsUnavailable -> PaymentState.NoPayment
         }
