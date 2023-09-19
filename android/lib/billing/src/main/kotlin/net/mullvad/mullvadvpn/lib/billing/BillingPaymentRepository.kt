@@ -38,19 +38,17 @@ class BillingPaymentRepository(
     override fun purchaseBillingProduct(productId: String): Flow<PurchaseResult> = flow {
         emit(PurchaseResult.PurchaseStarted)
         // Get transaction id
-        val obfuscatedId: String = when(val result = initialisePurchase()) {
-            is PlayPurchaseInitResult.Ok -> result.obfuscatedId
-            else -> {
-                emit(PurchaseResult.Error.TransactionIdError(null))
-                return@flow
+        val obfuscatedId: String =
+            when (val result = initialisePurchase()) {
+                is PlayPurchaseInitResult.Ok -> result.obfuscatedId
+                else -> {
+                    emit(PurchaseResult.Error.TransactionIdError(null))
+                    return@flow
+                }
             }
-        }
 
         val result =
-            billingRepository.startPurchaseFlow(
-                productId = productId,
-                transactionId = obfuscatedId
-            )
+            billingRepository.startPurchaseFlow(productId = productId, transactionId = obfuscatedId)
 
         if (result.responseCode == BillingResponseCode.OK) {
             emit(PurchaseResult.BillingFlowStarted)

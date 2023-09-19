@@ -77,7 +77,7 @@ fun InfoDialog(message: String, additionalInfo: String? = null, onDismiss: () ->
         confirmButton = {
             PrimaryButton(
                 modifier = Modifier.wrapContentHeight().fillMaxWidth(),
-                text = stringResource(R.string.changes_dialog_dismiss_button),
+                text = stringResource(R.string.got_it),
                 onClick = onDismiss,
             )
         },

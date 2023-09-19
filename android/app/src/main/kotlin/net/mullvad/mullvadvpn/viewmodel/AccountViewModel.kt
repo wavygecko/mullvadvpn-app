@@ -2,6 +2,7 @@ package net.mullvad.mullvadvpn.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -113,6 +114,8 @@ class AccountViewModel(
 
     fun fetchPaymentAvailability() {
         viewModelScope.launch {
+            _paymentAvailability.emit(PaymentAvailability.Loading)
+            delay(100L) // So that the ui gets a new state in retries
             paymentRepository?.queryPaymentAvailability()?.collect(_paymentAvailability)
                 ?: run { _paymentAvailability.emit(PaymentAvailability.ProductsUnavailable) }
         }
@@ -121,8 +124,8 @@ class AccountViewModel(
     private fun PaymentAvailability.toPaymentState(): PaymentState =
         when (this) {
             PaymentAvailability.Error.ServiceUnavailable,
-            PaymentAvailability.Error.BillingUnavailable -> PaymentState.BillingError
-            is PaymentAvailability.Error.Other -> PaymentState.GenericError
+            PaymentAvailability.Error.BillingUnavailable -> PaymentState.Error.BillingError
+            is PaymentAvailability.Error.Other -> PaymentState.Error.GenericError
             is PaymentAvailability.ProductsAvailable -> PaymentState.PaymentAvailable(products)
             PaymentAvailability.ProductsUnavailable -> PaymentState.NoPayment
             PaymentAvailability.Loading -> PaymentState.Loading
