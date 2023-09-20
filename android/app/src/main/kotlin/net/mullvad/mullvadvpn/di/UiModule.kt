@@ -94,7 +94,7 @@ val uiModule = module {
     viewModel { SelectLocationViewModel(get()) }
     viewModel { SettingsViewModel(get(), get()) }
     viewModel { VpnSettingsViewModel(get(), get(), get(), get()) }
-    viewModel { WelcomeViewModel(get(), get(), get()) }
+    viewModel { WelcomeViewModel(get(), get(), get(), get()) }
     viewModel { ReportProblemViewModel(get()) }
     viewModel { ViewLogsViewModel(get()) }
     viewModel { OutOfTimeViewModel(get(), get()) }

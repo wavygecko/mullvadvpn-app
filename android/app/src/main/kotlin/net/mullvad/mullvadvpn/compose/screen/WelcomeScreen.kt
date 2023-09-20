@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,16 +36,21 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import net.mullvad.mullvadvpn.R
+import net.mullvad.mullvadvpn.compose.button.ActionButton
 import net.mullvad.mullvadvpn.compose.button.RedeemVoucherButton
 import net.mullvad.mullvadvpn.compose.button.SitePaymentButton
 import net.mullvad.mullvadvpn.compose.component.CopyAnimatedIconButton
 import net.mullvad.mullvadvpn.compose.component.ScaffoldWithTopBar
 import net.mullvad.mullvadvpn.compose.component.drawVerticalScrollbar
 import net.mullvad.mullvadvpn.compose.dialog.DeviceNameInfoDialog
+import net.mullvad.mullvadvpn.compose.dialog.PaymentAvailabilityDialog
+import net.mullvad.mullvadvpn.compose.dialog.PurchaseResultDialog
+import net.mullvad.mullvadvpn.compose.state.PaymentState
 import net.mullvad.mullvadvpn.compose.state.WelcomeUiState
 import net.mullvad.mullvadvpn.compose.util.createCopyToClipboardHandle
 import net.mullvad.mullvadvpn.lib.common.util.groupWithSpaces
 import net.mullvad.mullvadvpn.lib.common.util.openAccountPageInBrowser
+import net.mullvad.mullvadvpn.lib.payment.model.PaymentProduct
 import net.mullvad.mullvadvpn.lib.theme.AlphaTopBar
 import net.mullvad.mullvadvpn.lib.theme.AppTheme
 import net.mullvad.mullvadvpn.lib.theme.Dimens
@@ -55,13 +63,24 @@ private fun PreviewWelcomeScreen() {
     AppTheme {
         WelcomeScreen(
             showSitePayment = true,
-            uiState = WelcomeUiState(accountNumber = "4444555566667777", deviceName = "Happy Mole"),
+            uiState =
+                WelcomeUiState(
+                    accountNumber = "4444555566667777",
+                    deviceName = "Happy Mole",
+                    billingPaymentState =
+                        PaymentState.PaymentAvailable(
+                            products = listOf(PaymentProduct("product", "$44"))
+                        )
+                ),
             uiSideEffect = MutableSharedFlow<WelcomeViewModel.UiSideEffect>().asSharedFlow(),
             onSitePaymentClick = {},
             onRedeemVoucherClick = {},
             onSettingsClick = {},
             onAccountClick = {},
-            openConnectScreen = {}
+            openConnectScreen = {},
+            onPurchaseBillingProductClick = {},
+            onTryFetchProductsAgain = {},
+            onTryVerificationAgain = {}
         )
     }
 }
@@ -75,7 +94,10 @@ fun WelcomeScreen(
     onRedeemVoucherClick: () -> Unit,
     onSettingsClick: () -> Unit,
     onAccountClick: () -> Unit,
-    openConnectScreen: () -> Unit
+    openConnectScreen: () -> Unit,
+    onPurchaseBillingProductClick: (productId: String) -> Unit,
+    onTryVerificationAgain: () -> Unit,
+    onTryFetchProductsAgain: () -> Unit
 ) {
     val context = LocalContext.current
     LaunchedEffect(Unit) {
@@ -87,6 +109,21 @@ fun WelcomeScreen(
             }
         }
     }
+
+    uiState.purchaseResult?.let {
+        PurchaseResultDialog(
+            purchaseResult = uiState.purchaseResult,
+            onClose = {},
+            onTryAgain = onTryVerificationAgain
+        )
+    }
+
+    PaymentAvailabilityDialog(
+        paymentAvailability = uiState.billingPaymentState,
+        onClose = {},
+        onTryAgain = onTryFetchProductsAgain
+    )
+
     val scrollState = rememberScrollState()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -129,7 +166,13 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             // Payment button area
-            PaymentPanel(showSitePayment, onSitePaymentClick, onRedeemVoucherClick)
+            PaymentPanel(
+                showSitePayment = showSitePayment,
+                billingPaymentState = uiState.billingPaymentState,
+                onSitePaymentClick = onSitePaymentClick,
+                onRedeemVoucherClick = onRedeemVoucherClick,
+                onPurchaseBillingProductClick = onPurchaseBillingProductClick
+            )
         }
     }
 }
@@ -260,8 +303,10 @@ fun DeviceNameRow(deviceName: String?) {
 @Composable
 private fun PaymentPanel(
     showSitePayment: Boolean,
+    billingPaymentState: PaymentState,
     onSitePaymentClick: () -> Unit,
-    onRedeemVoucherClick: () -> Unit
+    onRedeemVoucherClick: () -> Unit,
+    onPurchaseBillingProductClick: (productId: String) -> Unit
 ) {
     Column(
         modifier =
@@ -270,6 +315,49 @@ private fun PaymentPanel(
                 .background(color = MaterialTheme.colorScheme.background)
     ) {
         Spacer(modifier = Modifier.padding(top = Dimens.screenVerticalMargin))
+        when (billingPaymentState) {
+            is PaymentState.Error -> {
+                // We show some kind of dialog error at the top
+            }
+            PaymentState.Loading -> {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier =
+                        Modifier.padding(
+                                start = Dimens.sideMargin,
+                                end = Dimens.sideMargin,
+                                bottom = Dimens.screenVerticalMargin
+                            )
+                            .size(
+                                width = Dimens.progressIndicatorSize,
+                                height = Dimens.progressIndicatorSize
+                            )
+                            .align(Alignment.CenterHorizontally)
+                )
+            }
+            PaymentState.NoPayment -> {
+                // Show nothing
+            }
+            is PaymentState.PaymentAvailable -> {
+                billingPaymentState.products.forEach { product ->
+                    ActionButton(
+                        text = stringResource(id = R.string.add_30_days_time_x, product.price),
+                        onClick = { onPurchaseBillingProductClick(product.productId) },
+                        modifier =
+                            Modifier.padding(
+                                start = Dimens.sideMargin,
+                                end = Dimens.sideMargin,
+                                bottom = Dimens.screenVerticalMargin
+                            ),
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                contentColor = MaterialTheme.colorScheme.onPrimary,
+                                containerColor = MaterialTheme.colorScheme.surface
+                            )
+                    )
+                }
+            }
+        }
         if (showSitePayment) {
             SitePaymentButton(
                 onClick = onSitePaymentClick,

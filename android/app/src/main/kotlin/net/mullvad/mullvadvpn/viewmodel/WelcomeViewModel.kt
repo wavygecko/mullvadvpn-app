@@ -6,6 +6,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -16,9 +17,14 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import net.mullvad.mullvadvpn.PaymentProvider
+import net.mullvad.mullvadvpn.compose.state.PaymentState
 import net.mullvad.mullvadvpn.compose.state.WelcomeUiState
 import net.mullvad.mullvadvpn.constant.ACCOUNT_EXPIRY_POLL_INTERVAL
 import net.mullvad.mullvadvpn.lib.common.util.capitalizeFirstCharOfEachWord
+import net.mullvad.mullvadvpn.lib.payment.PaymentRepository
+import net.mullvad.mullvadvpn.lib.payment.model.PaymentAvailability
+import net.mullvad.mullvadvpn.lib.payment.model.PurchaseResult
 import net.mullvad.mullvadvpn.model.TunnelState
 import net.mullvad.mullvadvpn.repository.AccountRepository
 import net.mullvad.mullvadvpn.repository.DeviceRepository
@@ -36,9 +42,14 @@ class WelcomeViewModel(
     private val accountRepository: AccountRepository,
     private val deviceRepository: DeviceRepository,
     private val serviceConnectionManager: ServiceConnectionManager,
+    paymentProvider: PaymentProvider,
     private val pollAccountExpiry: Boolean = true
 ) : ViewModel() {
 
+    private val paymentRepository: PaymentRepository? = paymentProvider.paymentRepository
+
+    private val _paymentAvailability = MutableStateFlow<PaymentAvailability?>(null)
+    private val _purchaseResult = MutableStateFlow<PurchaseResult?>(null)
     private val _uiSideEffect = MutableSharedFlow<UiSideEffect>(extraBufferCapacity = 1)
     val uiSideEffect = _uiSideEffect.asSharedFlow()
 
@@ -56,12 +67,17 @@ class WelcomeViewModel(
                     serviceConnection.connectionProxy.tunnelUiStateFlow(),
                     deviceRepository.deviceState.debounce {
                         it.addDebounceForUnknownState(UNKNOWN_STATE_DEBOUNCE_DELAY_MILLISECONDS)
-                    }
-                ) { tunnelState, deviceState ->
+                    },
+                    _paymentAvailability,
+                    _purchaseResult
+                ) { tunnelState, deviceState, paymentAvailability, purchaseResult ->
                     WelcomeUiState(
                         tunnelState = tunnelState,
                         accountNumber = deviceState.token(),
-                        deviceName = deviceState.deviceName()?.capitalizeFirstCharOfEachWord()
+                        deviceName = deviceState.deviceName()?.capitalizeFirstCharOfEachWord(),
+                        billingPaymentState =
+                            paymentAvailability?.toPaymentState() ?: PaymentState.Loading,
+                        purchaseResult = purchaseResult
                     )
                 }
             }
@@ -85,6 +101,8 @@ class WelcomeViewModel(
                 delay(ACCOUNT_EXPIRY_POLL_INTERVAL)
             }
         }
+        verifyPurchases()
+        fetchPaymentAvailability()
     }
 
     private fun ConnectionProxy.tunnelUiStateFlow(): Flow<TunnelState> =
@@ -99,6 +117,34 @@ class WelcomeViewModel(
             )
         }
     }
+
+    fun startBillingPayment(productId: String) {
+        viewModelScope.launch {
+            paymentRepository?.purchaseBillingProduct(productId)?.collect(_purchaseResult)
+        }
+    }
+
+    fun verifyPurchases() {
+        viewModelScope.launch { paymentRepository?.verifyPurchases() }
+    }
+
+    fun fetchPaymentAvailability() {
+        viewModelScope.launch {
+            val result =
+                paymentRepository?.queryPaymentAvailability()
+                    ?: PaymentAvailability.ProductsUnavailable
+            _paymentAvailability.tryEmit(result)
+        }
+    }
+
+    private fun PaymentAvailability.toPaymentState(): PaymentState =
+        when (this) {
+            PaymentAvailability.Error.ServiceUnavailable,
+            PaymentAvailability.Error.BillingUnavailable -> PaymentState.Error.BillingError
+            is PaymentAvailability.Error.Other -> PaymentState.Error.GenericError
+            is PaymentAvailability.ProductsAvailable -> PaymentState.PaymentAvailable(products)
+            PaymentAvailability.ProductsUnavailable -> PaymentState.NoPayment
+        }
 
     sealed interface UiSideEffect {
         data class OpenAccountView(val token: String) : UiSideEffect
