@@ -36,7 +36,10 @@ class OutOfTimeFragment : BaseFragment() {
                         onSettingsClick = ::openSettingsView,
                         onAccountClick = ::openAccountView,
                         openConnectScreen = ::advanceToConnectScreen,
-                        onDisconnectClick = vm::onDisconnectClick
+                        onDisconnectClick = vm::onDisconnectClick,
+                        onPurchaseBillingProductClick = vm::startBillingPayment,
+                        onTryFetchProductsAgain = vm::fetchPaymentAvailability,
+                        onTryVerificationAgain = vm::verifyPurchases
                     )
                 }
             }
