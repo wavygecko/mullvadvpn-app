@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,8 +32,11 @@ import net.mullvad.mullvadvpn.compose.button.RedeemVoucherButton
 import net.mullvad.mullvadvpn.compose.button.SitePaymentButton
 import net.mullvad.mullvadvpn.compose.component.ScaffoldWithTopBar
 import net.mullvad.mullvadvpn.compose.component.drawVerticalScrollbar
+import net.mullvad.mullvadvpn.compose.dialog.PaymentAvailabilityDialog
+import net.mullvad.mullvadvpn.compose.dialog.PurchaseResultDialog
 import net.mullvad.mullvadvpn.compose.extensions.createOpenAccountPageHook
 import net.mullvad.mullvadvpn.compose.state.OutOfTimeUiState
+import net.mullvad.mullvadvpn.compose.state.PaymentState
 import net.mullvad.mullvadvpn.lib.theme.AlphaTopBar
 import net.mullvad.mullvadvpn.lib.theme.AppTheme
 import net.mullvad.mullvadvpn.lib.theme.Dimens
@@ -93,7 +98,10 @@ fun OutOfTimeScreen(
     onRedeemVoucherClick: () -> Unit = {},
     openConnectScreen: () -> Unit = {},
     onSettingsClick: () -> Unit = {},
-    onAccountClick: () -> Unit = {}
+    onAccountClick: () -> Unit = {},
+    onPurchaseBillingProductClick: (String) -> Unit = {},
+    onTryFetchProductsAgain: () -> Unit = {},
+    onTryVerificationAgain: () -> Unit = {}
 ) {
     val openAccountPage = LocalUriHandler.current.createOpenAccountPageHook()
     LaunchedEffect(key1 = Unit) {
@@ -105,6 +113,21 @@ fun OutOfTimeScreen(
             }
         }
     }
+
+    uiState.purchaseResult?.let {
+        PurchaseResultDialog(
+            purchaseResult = uiState.purchaseResult,
+            onClose = {},
+            onTryAgain = onTryVerificationAgain
+        )
+    }
+
+    PaymentAvailabilityDialog(
+        paymentAvailability = uiState.billingPaymentState,
+        onClose = {},
+        onTryAgain = onTryFetchProductsAgain
+    )
+
     val scrollState = rememberScrollState()
     ScaffoldWithTopBar(
         topBarColor =
@@ -189,6 +212,49 @@ fun OutOfTimeScreen(
                             bottom = Dimens.buttonSeparation
                         )
                 )
+            }
+            when (uiState.billingPaymentState) {
+                is PaymentState.Error -> {
+                    // We show some kind of dialog error at the top
+                }
+                PaymentState.Loading -> {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier =
+                            Modifier.padding(
+                                    start = Dimens.sideMargin,
+                                    end = Dimens.sideMargin,
+                                    bottom = Dimens.screenVerticalMargin
+                                )
+                                .size(
+                                    width = Dimens.progressIndicatorSize,
+                                    height = Dimens.progressIndicatorSize
+                                )
+                                .align(Alignment.CenterHorizontally)
+                    )
+                }
+                PaymentState.NoPayment -> {
+                    // Show nothing
+                }
+                is PaymentState.PaymentAvailable -> {
+                    uiState.billingPaymentState.products.forEach { product ->
+                        ActionButton(
+                            text = stringResource(id = R.string.add_30_days_time_x, product.price),
+                            onClick = { onPurchaseBillingProductClick(product.productId) },
+                            modifier =
+                                Modifier.padding(
+                                    start = Dimens.sideMargin,
+                                    end = Dimens.sideMargin,
+                                    bottom = Dimens.screenVerticalMargin
+                                ),
+                            colors =
+                                ButtonDefaults.buttonColors(
+                                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                                    containerColor = MaterialTheme.colorScheme.surface
+                                )
+                        )
+                    }
+                }
             }
             if (showSitePayment) {
                 SitePaymentButton(
