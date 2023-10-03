@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 import net.mullvad.mullvadvpn.model.DnsOptions
 import net.mullvad.mullvadvpn.model.GeographicLocationConstraint
 import net.mullvad.mullvadvpn.model.ObfuscationSettings
+import net.mullvad.mullvadvpn.model.PlayPurchase
 import net.mullvad.mullvadvpn.model.QuantumResistantState
 import net.mullvad.mullvadvpn.model.WireguardConstraints
 
@@ -79,6 +80,10 @@ sealed class Request : Message.RequestMessage() {
     @Parcelize data class SetWireGuardMtu(val mtu: Int?) : Request()
 
     @Parcelize data class SubmitVoucher(val voucher: String) : Request()
+
+    @Parcelize data object InitPlayPurchase : Request()
+
+    @Parcelize data class VerifyPlayPurchase(val playPurchase: PlayPurchase) : Request()
 
     @Parcelize data class UnregisterListener(val listenerId: Int) : Request()
 
