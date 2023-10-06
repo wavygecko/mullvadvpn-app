@@ -207,7 +207,7 @@ pub enum PlayPurchaseInitError {
 impl From<Result<String, daemon_interface::Error>> for PlayPurchaseInitResult {
     fn from(result: Result<String, daemon_interface::Error>) -> Self {
         match result {
-            Ok(obfuscated_id) => PlayPurchaseInitResult::Ok(obfuscated_id),
+            Ok(obfuscated_external_account_id) => PlayPurchaseInitResult::Ok(obfuscated_external_account_id),
             Err(error) => PlayPurchaseInitResult::Error(error.into()),
         }
     }

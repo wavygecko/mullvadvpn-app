@@ -11,6 +11,7 @@ import net.mullvad.mullvadvpn.applist.ApplicationsIconManager
 import net.mullvad.mullvadvpn.applist.ApplicationsProvider
 import net.mullvad.mullvadvpn.dataproxy.MullvadProblemReport
 import net.mullvad.mullvadvpn.lib.ipc.EventDispatcher
+import net.mullvad.mullvadvpn.lib.ipc.ServiceConnection
 import net.mullvad.mullvadvpn.repository.AccountRepository
 import net.mullvad.mullvadvpn.repository.ChangelogRepository
 import net.mullvad.mullvadvpn.repository.DeviceRepository
@@ -60,6 +61,7 @@ val uiModule = module {
     }
 
     single { ServiceConnectionManager(androidContext()) }
+    single<ServiceConnection> { get<ServiceConnectionManager>() }
     single { InetAddressValidator.getInstance() }
     single { androidContext().resources }
     single { androidContext().assets }

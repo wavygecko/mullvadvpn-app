@@ -9,6 +9,7 @@ import net.mullvad.mullvadvpn.model.DeviceListEvent
 import net.mullvad.mullvadvpn.model.DeviceState
 import net.mullvad.mullvadvpn.model.GeoIpLocation
 import net.mullvad.mullvadvpn.model.LoginResult
+import net.mullvad.mullvadvpn.model.PlayPurchase
 import net.mullvad.mullvadvpn.model.PlayPurchaseInitResult
 import net.mullvad.mullvadvpn.model.PlayPurchaseVerifyResult
 import net.mullvad.mullvadvpn.model.RelayList
@@ -64,7 +65,10 @@ sealed class Event : Message.EventMessage() {
     @Parcelize data class PlayPurchaseInitResultEvent(val result: PlayPurchaseInitResult) : Event()
 
     @Parcelize
-    data class PlayPurchaseVerifyResultEvent(val result: PlayPurchaseVerifyResult) : Event()
+    data class PlayPurchaseVerifyResultEvent(
+        val playPurchase: PlayPurchase,
+        val result: PlayPurchaseVerifyResult
+    ) : Event()
 
     @Parcelize object VpnPermissionRequest : Event()
 

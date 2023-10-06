@@ -51,7 +51,7 @@ class PlayPurchaseHandler(private val endpoint: ServiceEndpoint) {
 
     private suspend fun verifyPlayPurchase(playPurchase: PlayPurchase) {
         val result = daemon.await().verifyPlayPurchase(playPurchase)
-        endpoint.sendEvent(Event.PlayPurchaseVerifyResultEvent(result))
+        endpoint.sendEvent(Event.PlayPurchaseVerifyResultEvent(playPurchase, result))
     }
 
     companion object {

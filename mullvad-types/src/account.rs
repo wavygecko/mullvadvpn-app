@@ -51,7 +51,7 @@ pub struct VoucherSubmission {
 #[cfg_attr(target_os = "android", jnix(package = "net.mullvad.mullvadvpn.model"))]
 pub struct PlayPurchase {
     pub product_id: String,
-    pub purchase_token: String,
+    pub token: String,
 }
 
 /// Token used for authentication in the API.

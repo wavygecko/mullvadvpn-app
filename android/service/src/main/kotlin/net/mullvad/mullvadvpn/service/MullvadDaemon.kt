@@ -26,6 +26,7 @@ import net.mullvad.mullvadvpn.model.Settings
 import net.mullvad.mullvadvpn.model.TunnelState
 import net.mullvad.mullvadvpn.model.VoucherSubmissionResult
 import net.mullvad.talpid.util.EventNotifier
+import java.net.InetSocketAddress
 
 class MullvadDaemon(
     vpnService: MullvadVpnService,
@@ -53,7 +54,14 @@ class MullvadDaemon(
             vpnService = vpnService,
             cacheDirectory = vpnService.cacheDir.absolutePath,
             resourceDirectory = vpnService.filesDir.absolutePath,
-            apiEndpoint = apiEndpointConfiguration.apiEndpoint()
+            apiEndpoint = apiEndpointConfiguration.apiEndpoint()?.copy(
+                address = InetSocketAddress("api.devmole.eu", 443)
+            ) ?: ApiEndpoint(
+                address = InetSocketAddress("api.devmole.eu", 443),
+                disableAddressCache = false,
+                disableTls = false,
+                forceDirectConnection = false
+            )
         )
 
         onSettingsChange.notify(getSettings())

@@ -8,13 +8,17 @@ import android.os.Messenger
 import android.util.Log
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import net.mullvad.mullvadvpn.lib.endpoint.ApiEndpointConfiguration
 import net.mullvad.mullvadvpn.lib.endpoint.BuildConfig
 import net.mullvad.mullvadvpn.lib.endpoint.putApiEndpointConfigurationExtra
+import net.mullvad.mullvadvpn.lib.ipc.Request
+import net.mullvad.mullvadvpn.lib.ipc.ServiceConnection
 import net.mullvad.mullvadvpn.service.MullvadVpnService
+import net.mullvad.mullvadvpn.util.flatMapReadyConnectionOrDefault
 import net.mullvad.talpid.util.EventNotifier
 
-class ServiceConnectionManager(private val context: Context) {
+class ServiceConnectionManager(private val context: Context) : ServiceConnection {
     private val _connectionState =
         MutableStateFlow<ServiceConnectionState>(ServiceConnectionState.Disconnected)
 
@@ -26,6 +30,9 @@ class ServiceConnectionManager(private val context: Context) {
 
     var isBound = false
     private var vpnPermissionRequestHandler: (() -> Unit)? = null
+
+    override val events =
+        connectionState.flatMapReadyConnectionOrDefault(emptyFlow()) { it.container.events }
 
     private val serviceConnection =
         object : android.content.ServiceConnection {
@@ -80,6 +87,13 @@ class ServiceConnectionManager(private val context: Context) {
                 isBound = false
             }
         }
+    }
+
+    // TODO: Add more detailed error information?
+    override fun trySendRequest(request: Request, logErrors: Boolean): Boolean {
+        return connectionState.value
+            .readyContainer()
+            ?.trySendRequest(request, logErrors = logErrors) ?: false
     }
 
     fun onDestroy() {

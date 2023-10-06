@@ -51,6 +51,10 @@ dependencies {
     //Payment library
     implementation(project(Dependencies.Mullvad.paymentLib))
 
+    //Services and model
+    implementation(project(Dependencies.Mullvad.ipcLib))
+    implementation(project(Dependencies.Mullvad.modelLib))
+
     // Test dependencies
     testImplementation(project(Dependencies.Mullvad.commonTestLib))
     testImplementation(Dependencies.Kotlin.test)
