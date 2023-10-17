@@ -468,7 +468,7 @@ impl AccountsProxy {
     ) -> impl Future<Output = Result<PlayPurchasePaymentToken, rest::Error>> {
         #[derive(serde::Deserialize)]
         struct PlayPurchaseInitResponse {
-            obfuscated_id: String,
+            obfuscated_external_account_id: String,
         }
 
         let service = self.handle.service.clone();
@@ -487,10 +487,10 @@ impl AccountsProxy {
             )
             .await;
 
-            let PlayPurchaseInitResponse { obfuscated_id } =
+            let PlayPurchaseInitResponse { obfuscated_external_account_id } =
                 rest::deserialize_body(response?).await?;
 
-            Ok(obfuscated_id)
+            Ok(obfuscated_external_account_id)
         }
     }
 

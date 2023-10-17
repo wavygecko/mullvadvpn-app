@@ -161,7 +161,7 @@ class BillingPaymentRepository(
         return playPurchaseRepository.purchaseVerification(
             PlayPurchase(
                 productId = purchase.products.first(),
-                purchaseToken = purchase.purchaseToken,
+                token = purchase.purchaseToken,
             )
         )
     }

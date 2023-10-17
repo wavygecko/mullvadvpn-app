@@ -51,7 +51,7 @@ pub struct VoucherSubmission {
 #[cfg(target_os = "android")]
 pub struct PlayPurchase {
     pub product_id: String,
-    pub purchase_token: PlayPurchasePaymentToken,
+    pub token: PlayPurchasePaymentToken,
 }
 
 /// Token used for authentication in the API.
